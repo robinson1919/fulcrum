@@ -16,9 +16,21 @@ class CoursesController extends Controller
         $httpClient = new \GuzzleHttp\Client();
         $url = "https://lmstest.acue.org/ACUE-microcourselist.json";  
         $response = $httpClient->get($url);
-        $courses = $response->getBody()->getContents();
-        // return json_decode($courses); // for api
-        return view('courses')->with('courses', json_decode($courses));
+        $courses = json_decode($response->getBody()->getContents());
+        
+        $work_flow_availability = array_filter($courses, function ($course){
+            if(!is_null($course->workflow_state)){
+                return $course->workflow_state == "available";
+            }
+        });
+
+        $result = (object) [
+            "courses" => $courses,
+            "work_flow_availability" => count($work_flow_availability)
+        ];
+
+        // return $result; // for api
+        return view('courses')->with('courses', $result);
     }
 
     /**
