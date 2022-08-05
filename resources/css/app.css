@@ -1,0 +1,6 @@
+@import '~bootstrap';
+
+.row {
+    color: red;
+    background-color: blue;
+}
