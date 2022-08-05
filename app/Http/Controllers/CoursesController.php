@@ -30,6 +30,7 @@ class CoursesController extends Controller
         ];
 
         // return $result; // for api
+        
         return view('courses')->with('courses', $result);
     }
 
